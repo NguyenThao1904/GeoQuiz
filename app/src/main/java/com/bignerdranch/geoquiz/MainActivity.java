@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final String KEY_INDEX = "index";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate(Bundle) called");
         setContentView(R.layout.activity_main);
+        if (savedInstanceState !=null){
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX,0);
+        }
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-//               Toast.makeText(MainActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
                 checkAnswer(true);
             }
         });
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-//                Toast.makeText(MainActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
                 checkAnswer(false);
             }
         });
@@ -93,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         updateQuestion();
+    }
+    @Override
+    public void onSaveInstanceState (Bundle saveInstanceState){
+        super.onSaveInstanceState(saveInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        saveInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
     @Override
     public void onStart(){
